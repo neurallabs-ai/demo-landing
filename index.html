@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Neural Labs Systems</title>
+<meta name="description" content="Client website previews by Neural Labs Systems.">
+<!-- Client previews live in subfolders here; keep the subdomain out of search results. -->
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#000000">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
+<style>
+  :root{
+    --bg:#000;
+    --ink:#F4F6FB;
+    --muted:#7D8494;
+    --blue:#105BFF;
+    --blue-soft:#6E9BFF;
+    --font:"Archivo","Helvetica Neue",Arial,system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0}
+  html,body{height:100%}
+  body{
+    background:var(--bg);color:var(--ink);font-family:var(--font);
+    overflow:hidden;-webkit-font-smoothing:antialiased;
+  }
+  #net{position:fixed;inset:0;width:100%;height:100%;opacity:0;transition:opacity 2.4s ease 1.2s}
+  .ready #net{opacity:1}
+  /* Soft blue light behind the mark, plus a vignette so the edges fall to black. */
+  .glow{
+    position:fixed;inset:0;pointer-events:none;
+    background:
+      radial-gradient(38rem 26rem at 50% 46%, rgba(16,91,255,.16), transparent 70%),
+      radial-gradient(120% 90% at 50% 50%, transparent 55%, #000 100%);
+    opacity:0;transition:opacity 2s ease 1.6s;
+  }
+  .ready .glow{opacity:1}
+
+  main{
+    position:relative;z-index:1;height:100%;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    padding:24px 16px;text-align:center;
+  }
+  .mark{width:min(260px,62vw);height:auto;overflow:visible}
+  .mark path{
+    fill:transparent;stroke-width:1.2;
+    stroke-dasharray:1;stroke-dashoffset:1;
+  }
+  .mark .a{stroke:var(--ink)}
+  .mark .b{stroke:var(--blue)}
+  .ready .mark .b{animation:draw 1.6s cubic-bezier(.65,0,.35,1) .2s forwards, fill-b .9s ease 1.5s forwards}
+  .ready .mark .a{animation:draw 1.6s cubic-bezier(.65,0,.35,1) .55s forwards, fill-a .9s ease 1.85s forwards}
+  .ready .mark{animation:breathe 6s ease-in-out 3s infinite}
+  @keyframes draw{to{stroke-dashoffset:0}}
+  @keyframes fill-a{to{fill:var(--ink);stroke-width:0}}
+  @keyframes fill-b{to{fill:var(--blue);stroke-width:0}}
+  @keyframes breathe{
+    0%,100%{filter:drop-shadow(0 0 10px rgba(16,91,255,.25))}
+    50%{filter:drop-shadow(0 0 26px rgba(16,91,255,.55))}
+  }
+
+  .words{margin-top:34px;display:flex;flex-direction:column;align-items:center;gap:12px}
+  .name,.sub,.line,.foot{opacity:0}
+  .name{
+    font-stretch:125%;font-weight:350;font-size:clamp(1.15rem,3.6vw,1.7rem);
+    letter-spacing:.6em;padding-left:.6em;text-transform:uppercase;white-space:nowrap;
+  }
+  .sub{
+    font-stretch:125%;font-weight:700;font-size:clamp(.62rem,1.6vw,.78rem);
+    letter-spacing:.9em;padding-left:.9em;text-transform:uppercase;color:var(--blue-soft);
+  }
+  .ready .name{animation:track-in 1.4s cubic-bezier(.2,.7,.2,1) 2.1s forwards}
+  .ready .sub{animation:track-in-sub 1.4s cubic-bezier(.2,.7,.2,1) 2.35s forwards}
+  @keyframes track-in{from{opacity:0;letter-spacing:.6em;padding-left:.6em}to{opacity:1;letter-spacing:.18em;padding-left:.18em}}
+  @keyframes track-in-sub{from{opacity:0;letter-spacing:.9em;padding-left:.9em}to{opacity:1;letter-spacing:.52em;padding-left:.52em}}
+
+  .line{
+    margin-top:30px;font-size:.9rem;color:var(--muted);letter-spacing:.02em;max-width:34ch;line-height:1.6;
+  }
+  .ready .line{animation:fade-up 1s ease 3s forwards}
+  .foot{
+    position:fixed;left:0;right:0;bottom:22px;z-index:1;text-align:center;
+    font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;
+  }
+  .foot a{color:var(--muted);text-decoration:none;transition:color .2s}
+  .foot a:hover,.foot a:focus-visible{color:var(--ink)}
+  .ready .foot{animation:fade-up 1s ease 3.4s forwards}
+  @keyframes fade-up{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+  /* Visitors who turn motion off get the finished logo straight away. */
+  @media (prefers-reduced-motion: reduce){
+    #net{display:none}
+    .glow,.name,.sub,.line,.foot{opacity:1;transition:none}
+    .ready .mark,.ready .mark path,.ready .name,.ready .sub,.ready .line,.ready .foot{animation:none}
+    .mark path{stroke-dashoffset:0;stroke-width:0}
+    .mark .a{fill:var(--ink)}
+    .mark .b{fill:var(--blue)}
+    .name{letter-spacing:.18em;padding-left:.18em}
+    .sub{letter-spacing:.52em;padding-left:.52em}
+  }
+</style>
+</head>
+<body>
+<canvas id="net" aria-hidden="true"></canvas>
+<div class="glow" aria-hidden="true"></div>
+
+<main>
+  <h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Neural Labs Systems</h1>
+  <!-- Neural Labs mark, same paths as the neurallabs.ca theme -->
+  <svg class="mark" viewBox="344 116 204 74" role="img" aria-label="Neural Labs logo">
+    <path class="b" pathLength="1" d="M506.37 118.43 482.39 153.79c-4.68 6.9-13.52 8.35-20.05 3.92l-29.39-19.95c-10.41-7.06-24.2-4.19-31.24 6.14l-27.39 40.18-28.3-.1 40.02-58.86c5.86-8.63 17.44-11.22 26.1-5.41l29.1 19.5c8.81 5.92 19.28 3.6 25.8-4.35l11.34-16.52Z"/>
+    <path class="a" pathLength="1" d="M545.6 118.65 505.23 178.04c-6.6 7.82-17.06 10.47-25.85 4.55l-29.11-19.6c-8.55-5.76-18.86-3.16-25.27 4.22l-11.52 16.88-28.24-.08 24.06-35.44c4.61-6.8 13.51-8.23 20.2-3.72l29.07 19.62c11.13 7.51 24.88 4.1 32.29-6.83l26.71-39.3Z"/>
+  </svg>
+  <div class="words" aria-hidden="true">
+    <span class="name">Neural Labs</span>
+    <span class="sub">Systems</span>
+  </div>
+  <p class="line">Client website previews, built and hosted by Neural Labs.</p>
+</main>
+
+<div class="foot"><a href="https://neurallabs.ca">neurallabs.ca</a></div>
+
+<script>
+  // Start the CSS sequence once fonts are in, so the wordmark doesn't jump mid-animation.
+  (document.fonts ? document.fonts.ready : Promise.resolve()).then(function () {
+    requestAnimationFrame(function () { document.documentElement.classList.add('ready'); });
+  });
+
+  // Background: slow-drifting nodes that link up when close, like a quiet neural net.
+  (function () {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var canvas = document.getElementById('net');
+    var ctx = canvas.getContext('2d');
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var nodes = [], w = 0, h = 0, link = 0;
+    var pointer = { x: -9999, y: -9999 };
+
+    function resize() {
+      w = window.innerWidth; h = window.innerHeight;
+      canvas.width = w * dpr; canvas.height = h * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      link = Math.max(110, Math.min(w, h) * 0.18);
+      var count = Math.round(Math.min(90, (w * h) / 16000));
+      nodes = [];
+      for (var i = 0; i < count; i++) {
+        nodes.push({
+          x: Math.random() * w, y: Math.random() * h,
+          vx: (Math.random() - 0.5) * 0.18, vy: (Math.random() - 0.5) * 0.18,
+          r: Math.random() * 1.2 + 0.4
+        });
+      }
+    }
+
+    function frame() {
+      ctx.clearRect(0, 0, w, h);
+      for (var i = 0; i < nodes.length; i++) {
+        var n = nodes[i];
+        n.x += n.vx; n.y += n.vy;
+        if (n.x < -20) n.x = w + 20; else if (n.x > w + 20) n.x = -20;
+        if (n.y < -20) n.y = h + 20; else if (n.y > h + 20) n.y = -20;
+      }
+      for (var a = 0; a < nodes.length; a++) {
+        for (var b = a + 1; b < nodes.length; b++) {
+          var dx = nodes[a].x - nodes[b].x, dy = nodes[a].y - nodes[b].y;
+          var d = Math.sqrt(dx * dx + dy * dy);
+          if (d < link) {
+            ctx.strokeStyle = 'rgba(16,91,255,' + (0.3 * (1 - d / link)).toFixed(3) + ')';
+            ctx.lineWidth = 0.6;
+            ctx.beginPath(); ctx.moveTo(nodes[a].x, nodes[a].y); ctx.lineTo(nodes[b].x, nodes[b].y); ctx.stroke();
+          }
+        }
+        // Nodes near the pointer brighten slightly.
+        var px = nodes[a].x - pointer.x, py = nodes[a].y - pointer.y;
+        var near = Math.max(0, 1 - Math.sqrt(px * px + py * py) / 180);
+        ctx.fillStyle = 'rgba(190,211,255,' + (0.35 + near * 0.6).toFixed(3) + ')';
+        ctx.beginPath(); ctx.arc(nodes[a].x, nodes[a].y, nodes[a].r + near * 1.2, 0, Math.PI * 2); ctx.fill();
+      }
+      requestAnimationFrame(frame);
+    }
+
+    window.addEventListener('resize', resize);
+    window.addEventListener('pointermove', function (e) { pointer.x = e.clientX; pointer.y = e.clientY; });
+    window.addEventListener('pointerleave', function () { pointer.x = pointer.y = -9999; });
+    resize();
+    requestAnimationFrame(frame);
+  })();
+</script>
+</body>
+</html>

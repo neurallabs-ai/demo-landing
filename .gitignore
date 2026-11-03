@@ -1,0 +1,8 @@
+# This repo is only the demo.neurallabs.ca landing page.
+# Client sites in subfolders (oakbank/, ...) have their own repos and stay out of it.
+/*
+!/.gitignore
+!/.cpanel.yml
+!/.htaccess
+!/index.html
+!/favicon.svg

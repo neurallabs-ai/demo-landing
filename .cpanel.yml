@@ -1,0 +1,7 @@
+---
+# cPanel Git Version Control runs these tasks on "Deploy HEAD Commit".
+# Copies the landing page into the root of demo.neurallabs.ca; client subfolders are not touched.
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/zushtazz/demo.neurallabs.ca/
+    - /bin/cp index.html favicon.svg .htaccess $DEPLOYPATH

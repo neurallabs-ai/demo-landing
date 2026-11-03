@@ -1,0 +1,3 @@
+# Root of demo.neurallabs.ca: never list folders (client previews live in subfolders).
+Options -Indexes
+DirectoryIndex index.html index.php
